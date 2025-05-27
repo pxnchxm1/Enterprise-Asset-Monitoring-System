@@ -19,7 +19,7 @@ public class AssetService {
 	
 	@Autowired 
 	private UserRepository userRepository;
-	
+	//TODO : try to give return type a boolean or any response message of the status rather than returning whole entity back.
 	public Asset createAsset(AssetDTO dto) {
 		
 		User user =userRepository.findById(dto.getAssignedTo()).orElseThrow();
@@ -42,11 +42,11 @@ public class AssetService {
 	public Asset getAssetById(Long id) {
 		return assetRepository.findById(id).orElseThrow();
 	}
-	
+	//TODO: use try catch block or throws incase given id is not present.
 	public void deleteAsset(Long id) {
 		assetRepository.deleteById(id);
 	}
-	
+	//TODO: use try catch block or throws incase given id is not present.
 	public Asset updateAsset(Long id,AssetDTO dto) {
 		Asset asset = assetRepository.findById(id).orElseThrow();
 		User user = userRepository.findById(dto.getAssignedTo()).orElseThrow();
@@ -61,10 +61,7 @@ public class AssetService {
 		
 	}
 	
-	public List <Asset> getAssetsByUser(Long userId) {
-		
-		return assetRepository.findByAssignedToId(userId);
-	}
+	
 	
 
 }

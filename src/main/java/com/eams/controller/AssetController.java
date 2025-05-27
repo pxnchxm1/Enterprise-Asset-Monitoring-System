@@ -41,20 +41,17 @@ public class AssetController {
 	public Asset getById(@PathVariable Long id) {
 		return assetService.getAssetById(id);
 	}
-	
+	//TODO: assets can only be edited by manager..add a condition checking the same in service layer.
 	@PutMapping("/{id}")
 	public Asset update(@PathVariable Long id,@RequestBody AssetDTO dto) {
 		return assetService.updateAsset(id,dto);
 	}
-	
+	//TODO :Only manager can delete asset
 	@DeleteMapping("/{id}")
 	public void delete(@PathVariable Long id) {
 		assetService.deleteAsset(id);
 	}
 	
-	@GetMapping("/user/{userId}")
-	public List<Asset> getByUser(@PathVariable Long userId) {
-		return assetService.getAssetsByUser(userId);
-	}
+	
 
 }
