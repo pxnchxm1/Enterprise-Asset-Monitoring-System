@@ -1,22 +1,23 @@
 package com.eams.controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-
+import com.eams.dtos.UserDTO;
+import com.eams.service.UserService;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.*;
+import java.util.List;
 @RestController
 @RequestMapping("/api/users")
 public class UserController {
-	
-//	@GetMapping
-//	@PreAuthorize("hasRole('MANAGER')")
-//	public ResponseEntity<List<UserDTO>> getAllUsers(){
-//		return ResponseEntity.ok(UserService.getAllUsers());
-//	}
-//	
-//	@PutMapping("/{id}/role")
-//	@PreAuthorize("hasRole('MANAGER')")
-//	public ResponseEntity<String> updateUser(@PathVariable Long id,@RequestParam String role){
-//		UserService.updateUser(id,role);
-//		return ResponseEntity.ok("User role updated successfully");
-//	}
+
+    @GetMapping
+    @PreAuthorize("hasRole('MANAGER')")
+    public ResponseEntity<List<UserDTO>> getAllUsers(){
+        return ResponseEntity.ok(UserService.getAllUser());
+    }
+    @PutMapping("/{id}/role")
+    @PreAuthorize("hasRole('MANAGER')")
+    public ResponseEntity<String> updateUserRole(@PathVariable Long id,@RequestParam String role){
+        UserService.updateUserRole(id,role);
+        return ResponseEntity.ok("User role updated successfully");
+    }
 }
