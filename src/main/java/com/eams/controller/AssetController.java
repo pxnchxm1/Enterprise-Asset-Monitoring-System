@@ -32,8 +32,7 @@ public class AssetController {
 	
 	@GetMapping
 	public List<Asset> getAll(){
-		return assetService.getAllAssets();
-		
+		return assetService.getAllAssets();	
 		
 	}
 	

@@ -15,8 +15,8 @@ public class SensorData {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long sensor_data_id;
 
-    @ManyToOne
-    @JoinColumn(name = "asset_id", nullable = false)
+    
+    @Column(name = "asset_id", nullable = false)
     private Long asset_id;
     
     @Column(name = "temperature",nullable = false)

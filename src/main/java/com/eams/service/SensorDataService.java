@@ -1,13 +1,12 @@
 package com.eams.service;
 import com.eams.entity.Asset;
 import com.eams.entity.SensorData;
+import com.eams.repository.AssetRepository;
 import com.eams.repository.SensorDataRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.Optional;
 
 @Service

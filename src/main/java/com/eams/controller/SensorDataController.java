@@ -9,10 +9,10 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/api/sensors")
 public class SensorDataController {
-
+	@Autowired
     private  SensorDataService SDService;
 
-    @Autowired
+    
     public SensorDataController(SensorDataService sensorDataService) {
         this.SDService = sensorDataService;
     }
