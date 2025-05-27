@@ -1,4 +1,4 @@
-package com.eams.DTO;
+package com.eams.dto;
 
 import lombok.Data;
 

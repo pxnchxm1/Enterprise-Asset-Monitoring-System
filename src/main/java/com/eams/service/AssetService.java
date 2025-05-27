@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.eams.DTO.AssetDTO;
+import com.eams.dto.AssetDTO;
 import com.eams.entity.Asset;
 import com.eams.entity.User;
 import com.eams.repository.AssetRepository;
