@@ -17,7 +17,7 @@ public class SensorData {
 
     @ManyToOne
     @JoinColumn(name = "asset_id", nullable = false)
-    private Asset asset;
+    private Long asset_id;
     
     @Column(name = "temperature",nullable = false)
     private Double temperature;
@@ -26,5 +26,5 @@ public class SensorData {
     private Double pressure;
     
     @Column(name = "timestamp", columnDefinition = "TIMESTAMP")
-    private LocalDateTime timestamp;
+    private LocalDateTime timestamp = LocalDateTime.now();
 }
