@@ -1,4 +1,4 @@
-package com.eams.DTO;
+package com.eams.dto;
 import com.eams.entity.Role;
 
 import jakarta.persistence.EnumType;

@@ -10,8 +10,7 @@ import com.eams.repository.UserRepository;
 
 @Component
 public class UserMapper {
-	@Autowired
-	private UserRepository userRepo;
+	
 	
 	public UserDTO userToDto(User user) {
 		User u = new User();
