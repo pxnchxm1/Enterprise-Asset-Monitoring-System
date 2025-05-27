@@ -17,7 +17,7 @@ public class SensorData {
 
     @ManyToOne
     @JoinColumn(name = "asset_id", nullable = false)
-    private Long asset_id;
+    private Asset asset;
     
     @Column(name = "temperature",nullable = false)
     private Double temperature;

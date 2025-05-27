@@ -7,8 +7,8 @@ import java.time.LocalDateTime;
 @Entity
 @Data
 @Table
-@AllArgsConstructer
-@NoArgsConstructer
+@AllArgsConstructor
+@NoArgsConstructor
 
 public class Alert {
 	@Id
@@ -17,7 +17,6 @@ public class Alert {
 	
 	@ManyToOne
 	@JoinColumn(name = "asset_id")
-	@Column(unique=true)
 	private Asset asset_id;
 	
 	private String message;
