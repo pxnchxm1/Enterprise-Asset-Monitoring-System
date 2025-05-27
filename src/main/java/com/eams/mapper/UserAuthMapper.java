@@ -2,7 +2,7 @@ package com.eams.mapper;
 
 import org.springframework.stereotype.Component;
 
-import com.eams.dto.UserAuthDTO;
+import com.eams.dtos.UserAuthDTO;
 import com.eams.entity.User;
 
 @Component

@@ -1,4 +1,4 @@
-package com.eams.dto;
+package com.eams.dtos;
 
 import org.springframework.stereotype.Component;
 
