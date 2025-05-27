@@ -17,7 +17,7 @@ import java.util.stream.Collectors;
 @Service
 public class UserService {
 	@Autowired
-    private static UserRepository userRepository;
+    private  UserRepository userRepository;
 	
 	// the method checks for role if the role matches manager, then it returns all the users ,or else if the role is not manager ,then the method throws exception
 	public  List<UserDTO> getAllUser(){
@@ -35,11 +35,12 @@ public class UserService {
 	}
 	
 	//This method finds the user by userid, if found checks if the role is manager,if manager ,then updates the user role and if user is not manager ,then the method throws exceptions
-    public boolean updateUserRole(Long user_id, String role){
+    public boolean updateUserRole(String reqPersonMail,Long user_id, String role){
     	try {
-        User u=userRepository.findById(user_id).orElseThrow();
+        User u=userRepository.findByEmail(reqPersonMail).orElseThrow();
+        User user = userRepository.findById(user_id).orElseThrow();
         if(u.getRole() == Role.MANAGER) {
-        	u.setRole(Role.valueOf(role.toUpperCase()));
+        	user.setRole(Role.valueOf(role.toUpperCase()));
             userRepository.save(u);
             return true;
         }

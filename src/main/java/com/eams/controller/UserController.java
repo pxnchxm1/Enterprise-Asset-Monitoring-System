@@ -3,6 +3,7 @@ import com.eams.dtos.UserDTO;
 import com.eams.service.UserService;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.List;
@@ -18,9 +19,14 @@ public class UserController {
         return ResponseEntity.ok(us.getAllUser());
     }
 	
-    @PutMapping("/{id}/role")
-    public ResponseEntity<String> updateUserRole(@PathVariable Long id,@RequestParam String role){
-        us.updateUserRole(id,role);
-        return ResponseEntity.ok("User role updated successfully");
+    @PutMapping("/{id}/role/reqPerson")
+    public ResponseEntity<String> updateUserRole(@PathVariable Long id,@RequestParam String role,@RequestParam String reqPerson){
+        
+    	if(us.updateUserRole(reqPerson,id,role)) {
+    		 return ResponseEntity.ok("User role updated successfully");
+    	}else {
+    		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found or role update failed");
+    	}
+       
     }
 }
