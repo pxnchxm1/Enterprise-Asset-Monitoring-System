@@ -9,6 +9,7 @@ import com.eams.dtos.AssetDTO;
 import com.eams.entity.Asset;
 import com.eams.entity.User;
 import com.eams.repository.AssetRepository;
+import com.eams.repository.UserRepository;
 
 @Service
 public class AssetService {
@@ -48,7 +49,7 @@ public class AssetService {
 	
 	public Asset updateAsset(Long id,AssetDTO dto) {
 		Asset asset = assetRepository.findById(id).orElseThrow();
-		User user = userRepository.finById(dto.getAssignedTo()).orElseThrow();
+		User user = userRepository.findById(dto.getAssignedTo()).orElseThrow();
 		
 		asset.setAsset_name(dto.getAsset_name());
 		asset.setAsset_type(dto.getAsset_type());
