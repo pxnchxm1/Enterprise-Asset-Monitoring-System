@@ -13,15 +13,15 @@ import com.eams.entity.User;
 import com.eams.service.UserAuthService;
 
 @RestController
-@RequestMapping("api/auth")
+@RequestMapping("/api/auth")
 public class AuthController {
 	
 	@Autowired
-	private static UserAuthService authservice;
+	private  UserAuthService authservice;
 	
 	//function to register user 
 	@PostMapping("/register")
-	public ResponseEntity<UserDTO> registerUser(User u){
+	public ResponseEntity<UserDTO> registerUser(@RequestBody User u){
 		return ResponseEntity.ok(authservice.registerUser(u));
 	}
 	//function to login user
