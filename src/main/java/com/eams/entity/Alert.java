@@ -15,9 +15,8 @@ public class Alert {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private long id;
 	
-	@ManyToOne
 	@JoinColumn(name = "asset_id")
-	private Asset asset_id;
+	private Long asset_id;
 	
 	private String message;
 	
