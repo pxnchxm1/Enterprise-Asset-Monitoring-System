@@ -1,14 +1,19 @@
 package com.eams.controller;
 import com.eams.entity.MaintenanceLog;
 import com.eams.service.MaintenanceLogService;
+
+import jakarta.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/maintenance-log")
+@Validated
 public class MaintenanceLogController {
 
     @Autowired
@@ -16,7 +21,7 @@ public class MaintenanceLogController {
 
     // Schedule a maintenance log for an asset
     @PostMapping("/schedule/{assetId}")
-    public ResponseEntity<MaintenanceLog> scheduleLog(@PathVariable Long assetId, @RequestBody MaintenanceLog log) {
+    public ResponseEntity<MaintenanceLog> scheduleLog(@PathVariable Long assetId, @RequestBody @Valid MaintenanceLog log) {
         try {
             MaintenanceLog scheduledLog = service.schedule(assetId, log);
             return ResponseEntity.ok(scheduledLog);
