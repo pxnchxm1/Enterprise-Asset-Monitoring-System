@@ -1,4 +1,5 @@
 package com.eams.service;
+import com.eams.entity.AlertType;
 import com.eams.entity.Asset;
 import com.eams.entity.SensorData;
 import com.eams.repository.AssetRepository;
@@ -15,6 +16,9 @@ public class SensorDataService {
     private SensorDataRepository sdr;
     @Autowired
     private AssetRepository apr;
+    
+    @Autowired
+    private AlertService alertService;
 
     public SensorDataService(SensorDataRepository sensorDataRepository) {
         this.sdr = sensorDataRepository;
@@ -32,7 +36,19 @@ public class SensorDataService {
             sd.setTemperature(data.getTemperature());
             sd.setTimestamp(LocalDateTime.now());
             sdr.save(sd);
-//            TODO:Check the temp and press and trigger alert if exceeds thres value
+            sd.getSensor_data_id();
+            sd.getPressure();
+            sd.getTemperature();
+            sdr.save(sd);
+            Asset asset = apr.findById(sd.getAsset_id()).orElseThrow();
+            if(asset.getThresholdPressure()<sd.getPressure()) {
+            	alertService.createAlert(asset.getAsset_id(), AlertType.valueOf("PRESSURE_HIGH"), "Pressure is too high , Try with different value.");
+            }else if(asset.getThresholdTemp()<sd.getTemperature()) {
+            	alertService.createAlert(asset.getAsset_id(), AlertType.valueOf("TEMP_HIGH"), "Try entering lower temperature");
+            	
+            }
+            
+            
             return true;
         }catch (Exception e){
             System.out.println("Error Sending SensorData !!!");
