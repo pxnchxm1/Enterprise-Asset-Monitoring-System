@@ -22,9 +22,13 @@ public class UptimeLog {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique=true)
 	private Long uptimelog_id;
-	
+	@ManyToOne
 	@JoinColumn(name="asset_id", nullable=false)
-	private Long asset_id;
+	private Asset asset;
+	public void setAsset(Asset asset) {
+	    this.asset = asset;
+	}
+
 	private LocalDateTime startTime;
 	private LocalDateTime endTime;
 	private UpTimeLogStatus uptimeLogStatus;
