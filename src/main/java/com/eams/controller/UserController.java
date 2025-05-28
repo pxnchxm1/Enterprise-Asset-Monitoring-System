@@ -39,4 +39,17 @@ public class UserController {
     		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found or role update failed");
     	}       
     }   
+    
+    @DeleteMapping("/{id}/role/reqPerson")
+    public ResponseEntity<String> deleteUser(
+    		@PathVariable Long id,
+    		@RequestParam @NotBlank(message="role cannot be blank") String role,
+    		@RequestParam @NotBlank(message="email should be valid") String reqPerson){
+    	if(us.deleteUser(reqPerson,id,role)) {
+    		return ResponseEntity.ok("User deleted successfully");
+    	}else {
+    		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+    	}
+    }
+    
 }

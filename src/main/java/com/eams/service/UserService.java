@@ -43,8 +43,28 @@ public class UserService {
         return false;
     }
     
+    //Deletes the user only when the role is manager 
+    public boolean deleteUser(String reqPersonMail,Long userid,String role) {
+    	try {
+    		User u=userRepository.findByEmail(reqPersonMail).orElseThrow();
+    		
+    		if(u.getRole() != Role.MANAGER) {
+    			return false;
+    		}
+    		User idToDelete=userRepository.findById(userid).orElseThrow();
+    		userRepository.delete(idToDelete);
+    		return true;
+    	}    	
+    		catch(Exception e) {
+    			System.err.println("Error while deleting: "+e.getMessage());
+    		}
+    	return false;
+    }
+    
     //Finds the user by user email
     public User getbyEmail(String email){
         return userRepository.findByEmail(email).orElse(null);
     }
+    
+    
 }

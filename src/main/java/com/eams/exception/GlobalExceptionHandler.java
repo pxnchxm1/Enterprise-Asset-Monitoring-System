@@ -15,7 +15,7 @@ import jakarta.validation.ConstraintViolationException;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 	
-	//handles @RequestBody and @Valid errors
+	//handles @RequestBody and @Valid errors usually throws when method arguments fails validation
 	@ExceptionHandler(MethodArgumentNotValidException.class)
 	public ResponseEntity<Map<String, String>> handleValidationErrors(MethodArgumentNotValidException e) {
         Map<String, String> errors = new HashMap<>();
@@ -25,7 +25,12 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 	
-	//handles @RequestParam and @Pathvariable error
+//	@ExceptionHandler(MethodArgumentNotValidException.class)
+//	public ResponseEntity<Map<String,String>> validationErrors(MethodArgumentNotValidException e){
+//		
+//	}
+	
+	//handles the error when the data validation constraint is violated
 	@ExceptionHandler(ConstraintViolationException.class)
 	public ResponseEntity<String> handleConstraintViolation(ConstraintViolationException e){
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
