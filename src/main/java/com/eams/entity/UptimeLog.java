@@ -28,6 +28,7 @@ public class UptimeLog {
 	@ManyToOne
 	@JoinColumn(name="asset_id", nullable=false)
 	private Asset asset;
+	
 	private LocalDateTime startTime;
 	private LocalDateTime endTime;
 	
