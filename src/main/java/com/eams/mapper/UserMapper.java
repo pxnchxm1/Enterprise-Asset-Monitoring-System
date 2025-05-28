@@ -12,7 +12,6 @@ public class UserMapper {
 		u.setEmail(user.getEmail());
 		u.setName(user.getName());
 		u.setRole(user.getRole());
-		u.setPassword(user.getPassword());
 		u.setUser_id(user.getUser_id());
 		return u;	
 	}
@@ -21,7 +20,6 @@ public class UserMapper {
 		u.setEmail(userdto.getEmail());
 		u.setName(userdto.getName());
 		u.setRole(userdto.getRole());
-		u.setPassword(userdto.getPassword());
 		u.setUser_id(userdto.getUser_id());
 		return u;	
 	}
