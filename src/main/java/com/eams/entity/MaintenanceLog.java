@@ -17,9 +17,9 @@ public class MaintenanceLog {
     @Column(unique = true)
     private Long maintanance_log_id;
 
-    @ManyToOne
-    @JoinColumn(name = "asset_id", nullable = false)
-    private Asset asset_id; 
+
+    @Column(name = "asset_id", nullable = false)
+    private Long asset_id; 
     private LocalDate scheduledDate;
 
     private LocalDate completedDate;
