@@ -16,6 +16,7 @@ import lombok.NoArgsConstructor;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
+
 // main user class - two users (Manager/Operator)
 public class User {
 	@Id
