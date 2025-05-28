@@ -23,6 +23,7 @@ public class SensorDataService {
     public SensorDataService(SensorDataRepository sensorDataRepository) {
         this.sdr = sensorDataRepository;
     }
+    // get asset_id and store in asset
     public Optional<SensorData> getSensorDatabyAssetID(Long asset_id) {
         Asset asset = apr.findById(asset_id).orElseThrow();
         Optional<SensorData> sensorData = Optional.of(sdr.findAll().stream().filter(data -> data.getAsset_id().equals(asset.getAsset_id())).findFirst().orElseThrow());
@@ -36,6 +37,8 @@ public class SensorDataService {
             sd.setTemperature(data.getTemperature());
             sd.setTimestamp(LocalDateTime.now());
             sdr.save(sd);
+            
+            //To send trigger alerts
             sd.getSensor_data_id();
             sd.getPressure();
             sd.getTemperature();

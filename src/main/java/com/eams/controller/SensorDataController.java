@@ -27,8 +27,10 @@ public class SensorDataController {
     public ResponseEntity<Optional<SensorData>> getSensorData(@PathVariable Long asset_id) {
         return ResponseEntity.ok(SDService.getSensorDatabyAssetID(asset_id));
     }
+    
+    //To send a new sensor data and check status
     @PostMapping("/send-data")
-    public String sendSensorData(@Validated @RequestBody SensorData sd){
+    public String sendSensorData(@Valid @RequestBody SensorData sd){
         if(SDService.sendSensorData(sd)){
             return "Successfully Sent SensorData";
         }else{
