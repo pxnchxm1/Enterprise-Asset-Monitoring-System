@@ -1,0 +1,36 @@
+package com.eams.controller;
+import java.util.List;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+import com.eams.entity.UptimeLog;
+import com.eams.service.UptimeLogService;
+
+@RestController
+@RequestMapping("/api/uptime")
+public class UptimeLogController {
+
+	@Autowired 
+	private UptimeLogService service;
+	
+	@PostMapping("/asset/{asset_id}")
+	public ResponseEntity<UptimeLog> log(
+			@PathVariable Long asset_id,
+			@RequestBody UptimeLog log
+	){
+		return ResponseEntity.ok(service.createlog(asset_id, log));
+	}
+	@GetMapping("/getAssets/{asset_id}")
+	public List<UptimeLog> getByAsset(@PathVariable Long asset_id){
+		return service.getLogs(asset_id);
+	}
+	@GetMapping
+	public List<UptimeLog> getAllLogs(){
+		return service.getAllLogs();
+	}
+}
