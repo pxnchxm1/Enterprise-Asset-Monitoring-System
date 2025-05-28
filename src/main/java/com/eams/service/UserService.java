@@ -18,7 +18,7 @@ public class UserService {
 	@Autowired
     private  UserRepository userRepository;
 	
-	// the method checks for role if the role matches manager, then it returns all the users ,or else if the role is not manager ,then the method throws exception
+	// the method  returns all the users ,or else if the role is not manager ,then the method throws exception
 	public  List<UserDTO> getAllUser(){
 		
 		return userRepository.findAll().stream()

@@ -28,8 +28,6 @@ public class UserAuthService {
 			u.setPassword(passwordEncoder.encoder().encode(user.getPassword()));
 			u.setRole(user.getRole());
 			userRepo.save(u);
-			
-			
 			return user;
 		}
 		
