@@ -7,7 +7,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import com.eams.entity.UptimeLog;
 import com.eams.service.UptimeLogService;
@@ -16,16 +15,22 @@ import com.eams.service.UptimeLogService;
 @RequestMapping("/api/uptime")
 public class UptimeLogController {
 
-	@Autowired private UptimeLogService service;
-	@PostMapping
+	@Autowired 
+	private UptimeLogService service;
+	
+	@PostMapping("/asset/{asset_id}")
 	public ResponseEntity<UptimeLog> log(
-			@RequestParam Long asset_id,
+			@PathVariable Long asset_id,
 			@RequestBody UptimeLog log
 	){
-		return ResponseEntity.ok(service.logStatus(asset_id, log));
+		return ResponseEntity.ok(service.createlog(asset_id, log));
 	}
-	@GetMapping("/asset/{id}")
-	public List<UptimeLog> getByAsset(@PathVariable Long id){
-		return service.getLogs(id);
+	@GetMapping("/getAssets/{asset_id}")
+	public List<UptimeLog> getByAsset(@PathVariable Long asset_id){
+		return service.getLogs(asset_id);
+	}
+	@GetMapping
+	public List<UptimeLog> getAllLogs(){
+		return service.getAllLogs();
 	}
 }

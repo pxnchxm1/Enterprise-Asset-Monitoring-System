@@ -4,6 +4,8 @@ import java.time.LocalDateTime;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -22,14 +24,13 @@ public class UptimeLog {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(unique=true)
 	private Long uptimelog_id;
+	
 	@ManyToOne
 	@JoinColumn(name="asset_id", nullable=false)
 	private Asset asset;
-	public void setAsset(Asset asset) {
-	    this.asset = asset;
-	}
-
 	private LocalDateTime startTime;
 	private LocalDateTime endTime;
+	
+	@Enumerated(EnumType.STRING)
 	private UpTimeLogStatus uptimeLogStatus;
 }
