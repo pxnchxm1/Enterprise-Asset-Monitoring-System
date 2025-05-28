@@ -25,11 +25,6 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errors, HttpStatus.BAD_REQUEST);
     }
 	
-//	@ExceptionHandler(MethodArgumentNotValidException.class)
-//	public ResponseEntity<Map<String,String>> validationErrors(MethodArgumentNotValidException e){
-//		
-//	}
-	
 	//handles the error when the data validation constraint is violated
 	@ExceptionHandler(ConstraintViolationException.class)
 	public ResponseEntity<String> handleConstraintViolation(ConstraintViolationException e){
