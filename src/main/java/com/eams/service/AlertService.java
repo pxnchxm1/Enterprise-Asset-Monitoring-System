@@ -3,16 +3,16 @@ package com.eams.service;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Service;
 
 import com.eams.entity.Alert;
 import com.eams.entity.AlertStatus;
 import com.eams.entity.AlertType;
 import com.eams.entity.Asset;
 import com.eams.repository.AlertRepository;
+import com.eams.repository.AssetRepository;
 
-
-interface AssetRepository extends JpaRepository<Asset,Long>{}
+@Service
 public class AlertService {
 	
 	@Autowired

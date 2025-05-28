@@ -2,7 +2,6 @@ package com.eams.controller;
 
 import java.util.List;
 
-import com.eams.entity.AlertType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
