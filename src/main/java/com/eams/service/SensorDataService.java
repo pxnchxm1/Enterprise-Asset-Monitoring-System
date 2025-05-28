@@ -32,6 +32,7 @@ public class SensorDataService {
             sd.setTemperature(data.getTemperature());
             sd.setTimestamp(LocalDateTime.now());
             sdr.save(sd);
+           
 //            TODO:Check the temp and press and trigger alert if exceeds thres value
             return true;
         }catch (Exception e){

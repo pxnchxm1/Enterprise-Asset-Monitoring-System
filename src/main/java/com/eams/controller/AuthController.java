@@ -8,9 +8,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.eams.dtos.UserAuthDTO;
-import com.eams.dtos.UserDTO;
 import com.eams.entity.User;
 import com.eams.service.UserAuthService;
+
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/auth")
@@ -21,13 +22,13 @@ public class AuthController {
 	
 	//function to register user 
 	@PostMapping("/register")
-	public ResponseEntity<UserDTO> registerUser(@RequestBody User u){
+	public ResponseEntity<User> registerUser(@RequestBody @Valid User u){
 		return ResponseEntity.ok(authservice.registerUser(u));
 	}
 	//function to login user
 	
 	@PostMapping("/login")
-	public String loginUser(@RequestBody UserAuthDTO user) {
+	public String loginUser(@RequestBody @Valid UserAuthDTO user) {
 		if(authservice.loginUser(user)) {
 			return "Successully logged in ";
 		}
