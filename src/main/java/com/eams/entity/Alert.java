@@ -21,4 +21,10 @@ public class Alert {
 	private String message;
 	
 	private LocalDateTime triggeredAt=LocalDateTime.now();
+	
+	@Enumerated(EnumType.STRING)
+	private AlertType type;
+	
+	@Enumerated(EnumType.STRING)
+	private AlertStatus status = AlertStatus.ACTIVE;
 }
