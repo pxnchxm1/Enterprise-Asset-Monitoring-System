@@ -1,6 +1,7 @@
 package com.eams.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.*;
 import lombok.*;
 import java.time.LocalDateTime;
 
@@ -18,6 +19,8 @@ public class Alert {
 	@JoinColumn(name = "asset_id")
 	private Long asset_id;
 	
+	@NotBlank(message = "Message is required")
+	@Size(max = 250, message = "Message too long")
 	private String message;
 	
 	private LocalDateTime triggeredAt=LocalDateTime.now();
