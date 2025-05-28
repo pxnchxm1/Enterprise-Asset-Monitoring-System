@@ -6,13 +6,12 @@ import com.eams.entity.Role;
 import com.eams.entity.User;
 import com.eams.mapper.UserMapper;
 import com.eams.repository.UserRepository;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
 import java.util.List;
-import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
+
 
 @Service
 public class UserService {
@@ -21,17 +20,10 @@ public class UserService {
 	
 	// the method checks for role if the role matches manager, then it returns all the users ,or else if the role is not manager ,then the method throws exception
 	public  List<UserDTO> getAllUser(){
-		Role currentRole=Role.MANAGER;	
-		try{
-			if(currentRole == Role.MANAGER) {
-				return userRepository.findAll().stream()
-		                .map(UserMapper::userToDto)
-		                .collect(Collectors.toList());
-			}
-		}catch(Exception e) {
-			System.err.println("Error while fetching users: " + e.getMessage());
-		}
-		return new ArrayList<>();
+		
+		return userRepository.findAll().stream()
+                .map(UserMapper::userToDto)
+                .collect(Collectors.toList());			
 	}
 	
 	//This method finds the user by userid, if found checks if the role is manager,if manager ,then updates the user role and if user is not manager ,then the method throws exceptions
