@@ -23,9 +23,16 @@ public class AssetService {
 
 	public boolean createAsset(AssetDTO dto) {
 	    try {
+	       
 	        User user = userRepository.findById(dto.getAssignedTo())
-	                .orElseThrow();
-	        if(user.getRole()==Role.MANAGER) {
+	                .orElseThrow(() -> new RuntimeException("User not found with ID: " + dto.getAssignedTo()));
+
+	    
+	        if (user.getRole() != Role.MANAGER) {
+	            throw new RuntimeException("User with ID " + dto.getAssignedTo() + " is not a MANAGER");
+	        }
+
+
 	        Asset asset = Asset.builder()
 	                .asset_name(dto.getAsset_name())
 	                .asset_type(dto.getAsset_type())
@@ -36,25 +43,27 @@ public class AssetService {
 	                .build();
 
 	        assetRepository.save(asset);
-	        return true;	        
-	        }
+	        return true;
+
 	    } catch (Exception e) {
-	        System.out.println("Role is not Manager "+e.getMessage());
+	
+	        System.out.println("Error while creating asset: " + e.getMessage());
+	        return false;
 	    }
-	    return false;
 	}
 
-	
+	// get all assets from db
 	public List<Asset> getAllAssets() {
 		return assetRepository.findAll();
 		
 	}
 	
+	// get asset by ID
 	public Asset getAssetById(Long id) {
 		return assetRepository.findById(id).orElseThrow();
 	}
 	
-
+	// delete asset
 	public String deleteAsset(Long id,Long userid) {
 		
 	    try {
@@ -75,7 +84,7 @@ public class AssetService {
 	    }
 	}
 	
-
+	// update asset
 	public String updateAsset(Long id, AssetDTO dto) {
 	    try {
 	        Asset asset = assetRepository.findById(id)
