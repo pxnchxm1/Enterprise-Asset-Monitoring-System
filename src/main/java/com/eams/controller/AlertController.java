@@ -28,7 +28,7 @@ public class AlertController {
 	}
 	//get assset id ,type of alert and message
 	@PostMapping("/send-alert")
-	public ResponseEntity<Alert> createAlert(@Valid@RequestBody Alert alert){
+	public ResponseEntity<Alert> createAlert(@Valid @RequestBody Alert alert){
 		return ResponseEntity.ok(service.createAlert(alert.getAsset_id(),alert.getType(),alert.getMessage()));
 	}
 	
