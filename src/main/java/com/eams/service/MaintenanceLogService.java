@@ -1,6 +1,7 @@
 package com.eams.service;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -22,13 +23,15 @@ public class MaintenanceLogService {
         MaintenanceLog l =new MaintenanceLog();
         l.setAsset_id(asset.getAsset_id());
         l.setCompletedDate(log.getCompletedDate());
+        l.setScheduledDate(log.getScheduledDate());
+        l.setRemarks(log.getRemarks());
         return repo.save(l);
     }
 
-    public MaintenanceLog getByAssetId(Long assetId) {
+    public List<MaintenanceLog> getByAssetId(Long assetId) {
     	Asset asset = assetRepo.findById(assetId).orElseThrow();
-        MaintenanceLog requiredLog = repo.findAll().stream().filter(x->x.getAsset_id().equals(asset.getAsset_id())).findFirst().orElseThrow();
-        return requiredLog;
+        List<MaintenanceLog> requiredLogs = repo.findAll().stream().filter(x->x.getAsset_id().equals(asset.getAsset_id())).collect(Collectors.toList());
+        return requiredLogs;
     }
     
     public List<MaintenanceLog> getAllAssetId() {
