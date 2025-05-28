@@ -21,14 +21,15 @@ public class AlertService {
 	private AssetRepository assetRepo;
 	
 	
-	public Alert createAlert(Long assetId, AlertType type, String message) {
+	public Alert createAlert(Long assetId, String type, String message) {
 		Asset asset = assetRepo.findById(assetId).orElseThrow();
 		Alert alert = new Alert();
 		alert.setAsset_id(asset.getAsset_id());
-		alert.setType(AlertType.valueOf(asset.getAsset_type()));
-		alert.setMessage(asset.getMessage());
+		alert.setType(AlertType.valueOf(type));
+		alert.setMessage(message);
 		alert.setStatus(AlertStatus.ACTIVE);
-		return alertRepo.save(alert);
+		alertRepo.save(alert);
+		return alert;
 	}
 	public List<Alert> getAll(){
 		return alertRepo.findAll();
