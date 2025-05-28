@@ -3,7 +3,7 @@ package com.eams.exception;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.NoSuchElementException;
-
+import com.eams.exception.UserAlreadyExistsException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -35,6 +35,17 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(NoSuchElementException.class)
 	public ResponseEntity<String> handleNoSuchElement(NoSuchElementException ex) {
 	    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+	}
+    //incase user with given mail already exists in database
+	@ExceptionHandler(UserAlreadyExistsException.class)
+	public ResponseEntity<String> handleUserAlreadyExistsException(UserAlreadyExistsException uae){
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User already exists");
+	}
+
+	//exception to handle if role is invalid .
+	@ExceptionHandler(InvalidUserRoleException.class)
+	public ResponseEntity<String> handleInvalidUserRole(InvalidUserRoleException ex){
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid User. User should be MANAGER|OPERATOR");
 	}
 
 }
