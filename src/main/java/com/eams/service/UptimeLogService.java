@@ -39,7 +39,9 @@ public class UptimeLogService implements UptimeLogServiceInterface {
 	public List<UptimeLog> getLogs(Long asset_id){
 		
 		//Gets Asset using it's ID and throws error if not found
-		Asset asset = assetRepo.findById(asset_id).orElseThrow();
+		Asset asset = assetRepo.findById(asset_id).orElseThrow(
+				() -> new AssetNotFoundException("Asset with ID " + asset_id + " not found")
+				);
 		return repo.findAll().stream().filter(log->log.getAsset().getAsset_id().
 				equals(asset.getAsset_id())).collect(Collectors.toList());
 	}
