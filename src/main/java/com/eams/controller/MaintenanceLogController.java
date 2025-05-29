@@ -32,12 +32,8 @@ public class MaintenanceLogController {
 
     @GetMapping("/asset/{assetId}")
     public ResponseEntity<List<MaintenanceLog>> getByAssetId(@PathVariable Long assetId) {
-        try {
-            List<MaintenanceLog> logs = service.getByAssetId(assetId);
-            return ResponseEntity.ok(logs);
-        } catch (Exception e) {
-            return ResponseEntity.notFound().build();
-        }
+    	List<MaintenanceLog> logs = service.getByAssetId(assetId); // May throw AssetNotFoundException
+        return ResponseEntity.ok(logs);
     }
 
     @GetMapping("/all")

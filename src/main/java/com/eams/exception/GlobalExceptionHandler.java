@@ -34,18 +34,29 @@ public class GlobalExceptionHandler {
 	//Handles error when user is not found
 	@ExceptionHandler(NoSuchElementException.class)
 	public ResponseEntity<String> handleNoSuchElement(NoSuchElementException ex) {
-	    return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+	    return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
 	}
     //incase user with given mail already exists in database
 	@ExceptionHandler(UserAlreadyExistsException.class)
 	public ResponseEntity<String> handleUserAlreadyExistsException(UserAlreadyExistsException uae){
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("User already exists");
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(uae.getMessage());
 	}
 
 	//exception to handle if role is invalid .
 	@ExceptionHandler(InvalidUserRoleException.class)
 	public ResponseEntity<String> handleInvalidUserRole(InvalidUserRoleException ex){
-		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid User. User should be MANAGER|OPERATOR");
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
+	}
+	
+	//exception to handle invalid sensor data .
+	@ExceptionHandler(InvalidSensorDataException.class)
+	public ResponseEntity<String> handleSensorDataException(InvalidSensorDataException ex){
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
 	}
 
+	//Exception to handle if asset_id is not found
+	@ExceptionHandler(AssetNotFoundException.class)
+	public ResponseEntity<String> handleAssetNotFound(AssetNotFoundException ax){
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ax.getMessage());
+	}
 }

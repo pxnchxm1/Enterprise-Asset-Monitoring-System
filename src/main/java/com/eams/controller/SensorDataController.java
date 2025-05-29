@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -21,10 +23,15 @@ public class SensorDataController {
     public SensorDataController(SensorDataService sensorDataService) {
         this.SDService = sensorDataService;
     }
+    //To display all sensor data values
+    @GetMapping
+    public ResponseEntity<List<SensorData>> getAllSensorData(){
+    	return ResponseEntity.ok(SDService.getAllSensorData());
+    }
 
     // This function gets asset_id
     @GetMapping("/asset/{asset_id}")
-    public ResponseEntity<Optional<SensorData>> getSensorData(@PathVariable Long asset_id) {
+    public ResponseEntity<List<SensorData>> getSensorData(@PathVariable Long asset_id) {
         return ResponseEntity.ok(SDService.getSensorDatabyAssetID(asset_id));
     }
     

@@ -14,7 +14,7 @@ import java.time.LocalDateTime;
 public class Alert {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 	
 	@JoinColumn(name = "asset_id")
 	private Long asset_id;
