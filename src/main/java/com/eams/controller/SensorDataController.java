@@ -10,16 +10,16 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
+
 
 @RestController
 @RequestMapping("/api/sensors")
 @Validated
 public class SensorDataController {
-	@Autowired
+	
     private  SensorDataService SDService;
 
-    
+    @Autowired
     public SensorDataController(SensorDataService sensorDataService) {
         this.SDService = sensorDataService;
     }
