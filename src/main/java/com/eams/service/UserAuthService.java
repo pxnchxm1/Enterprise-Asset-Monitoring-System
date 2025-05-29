@@ -1,7 +1,6 @@
 package com.eams.service;
 
 import com.eams.dtos.UserLoginDTO;
-import com.eams.exception.InvalidUserRoleException;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -14,7 +13,7 @@ import com.eams.exception.UserAlreadyExistsException;
 
 @Slf4j
 @Service
-public class UserAuthService {
+public class UserAuthService implements UserAuthServiceInterface {
 	
 	@Autowired
 	private UserRepository userRepo;
