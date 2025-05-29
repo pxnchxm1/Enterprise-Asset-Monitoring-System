@@ -17,6 +17,7 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 
+import com.eams.dtos.UserDTO;
 import com.eams.entity.Role;
 import com.eams.entity.User;
 import com.eams.repository.UserRepository;
@@ -35,19 +36,22 @@ public class UserServiceTest {
 		MockitoAnnotations.openMocks(this);
 	}
 	
+	//test case to fetch all the users when the user is manager
 	@Test
 	public void testgetAllUser_whenManager() {
 		String managerMail="manager@gmail.com";
 		User manager=new User(null,"managerName",managerMail, "password", Role.MANAGER);
 		
-		User user1=new User(null,"Sara",managerMail,"Sa_123SARA",Role.OPERATOR);
-		User user2=new User(null,"Virat",managerMail,"Virat_678",Role.OPERATOR);
+		User user1=new User(1L,"Sara",managerMail,"Sa_123SARA",Role.OPERATOR);
+		User user2=new User(1L,"Virat",managerMail,"Virat_678",Role.OPERATOR);
 		when(userRepository.findByEmail(managerMail)).thenReturn(Optional.of(manager));
 		when(userRepository.findAll()).thenReturn(Arrays.asList(user1,user2));
-		List<?> result=userService.getAllUser(managerMail);
+		List<UserDTO> result=userService.getAllUser(managerMail);
 		assertEquals(2,result.size());
 	}
 	
+	
+	//Test case to get all users when the user is not manager
 	@Test
 	public void testgetAllUsers_whenNotManager() {
 		String userMail="user@gmail.com";
@@ -56,6 +60,7 @@ public class UserServiceTest {
 		assertThrows(SecurityException.class,() -> userService.getAllUser(userMail));
 	}
 	
+	//Test case to test update user role only when the user is manager
 	@Test
 	public void testUpdateUserRole_whenManager() {
 		String managerMail="manager@gmail.com";
@@ -69,6 +74,7 @@ public class UserServiceTest {
 		assertEquals(Role.MANAGER,user1.getRole());
 	}
 	
+	//Test case to test delete user role only when the user is manager
 	@Test
 	public void testDeleteUser_whenManager() {
 		String managerMail="manager@gmail.com";
