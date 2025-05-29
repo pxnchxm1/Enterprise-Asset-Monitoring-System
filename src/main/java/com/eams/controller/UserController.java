@@ -4,6 +4,7 @@ import com.eams.service.UserService;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -15,6 +16,7 @@ import java.util.List;
 @RestController
 @RequestMapping("api/users")
 @Validated
+@Slf4j
 public class UserController {
     @Autowired
     private UserService us;
@@ -24,8 +26,10 @@ public class UserController {
     public ResponseEntity<?> getAllUsers(@RequestParam String reqPersonMail){
 		try {
 			List<UserDTO> users=us.getAllUser(reqPersonMail);
+			log.info("Manager fetched all the users");
 			return ResponseEntity.ok(users);
 		}catch(SecurityException e) {
+			log.error("Only manager can get users");
 			return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only manager can fetch users");
 		}catch(Exception e) {
 			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error");
@@ -42,8 +46,10 @@ public class UserController {
     				      @Email(message="email should be valid") String reqPerson){
         
     	if(us.updateUserRole(reqPerson,id,role)) {
+    		log.info("User Role has been updated successfully");
     		 return ResponseEntity.ok("User role updated successfully");
     	}else {
+    		log.error("Invalid user id");
     		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found or role update failed");
     	}       
     }   
@@ -55,7 +61,8 @@ public class UserController {
     	if(us.deleteUser(reqPerson,id)) {
     		return ResponseEntity.ok("User deleted successfully");
     	}else {
-    		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("User not found");
+    		log.error("User not found to delete");
+    		return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Invalid user id");
     	}
     }
     
