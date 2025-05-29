@@ -23,6 +23,7 @@ public class SensorDataController {
     public SensorDataController(SensorDataService sensorDataService) {
         this.SDService = sensorDataService;
     }
+    //To display all sensor data values
     @GetMapping
     public ResponseEntity<List<SensorData>> getAllSensorData(){
     	return ResponseEntity.ok(SDService.getAllSensorData());

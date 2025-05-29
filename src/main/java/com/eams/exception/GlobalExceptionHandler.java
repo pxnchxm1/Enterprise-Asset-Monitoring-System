@@ -48,6 +48,7 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
 	}
 	
+	//exception to handle invalid sensor data .
 	@ExceptionHandler(InvalidSensorDataException.class)
 	public ResponseEntity<String> handleSensorDataException(InvalidSensorDataException ex){
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ex.getMessage());
