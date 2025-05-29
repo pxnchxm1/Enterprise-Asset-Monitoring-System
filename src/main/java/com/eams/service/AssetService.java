@@ -107,9 +107,4 @@ public class AssetService {
 	        return "Error updating asset: " + ex.getMessage();
 	    }
 	}
-
-
-	
-	
-
 }
