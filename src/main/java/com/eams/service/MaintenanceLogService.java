@@ -12,7 +12,7 @@ import com.eams.repository.MaintenanceLogRepository;
 import com.eams.repository.AssetRepository;
 
 @Service
-public class MaintenanceLogService {
+public class MaintenanceLogService implements MaintenanceLogServiceInterface {
     @Autowired 
     private MaintenanceLogRepository repo;
     @Autowired 
