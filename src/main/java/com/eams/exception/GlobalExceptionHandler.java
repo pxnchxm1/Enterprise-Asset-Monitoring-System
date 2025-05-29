@@ -47,5 +47,10 @@ public class GlobalExceptionHandler {
 	public ResponseEntity<String> handleInvalidUserRole(InvalidUserRoleException ex){
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid User. User should be MANAGER|OPERATOR");
 	}
+	
+	@ExceptionHandler(InvalidSensorDataException.class)
+	public ResponseEntity<String> handleSensorDataException(InvalidSensorDataException ex){
+		return ResponseEntity.ok("Invalid Sensor Data !! , Try giving a different value.");
+	}
 
 }

@@ -2,8 +2,11 @@ package com.eams.service;
 import com.eams.entity.AlertType;
 import com.eams.entity.Asset;
 import com.eams.entity.SensorData;
+import com.eams.exception.InvalidSensorDataException;
 import com.eams.repository.AssetRepository;
 import com.eams.repository.SensorDataRepository;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +32,8 @@ public class SensorDataService {
         Optional<SensorData> sensorData = Optional.of(sdr.findAll().stream().filter(data -> data.getAsset_id().equals(asset.getAsset_id())).findFirst().orElseThrow());
         return sensorData;
     }
-    public Boolean sendSensorData(SensorData data){
+    @SuppressWarnings("finally")
+	public Boolean sendSensorData(SensorData data){
         try {
             SensorData sd = new SensorData();
             sd.setAsset_id(data.getAsset_id());
@@ -46,16 +50,19 @@ public class SensorDataService {
             Asset asset = apr.findById(sd.getAsset_id()).orElseThrow();
             if(asset.getThresholdPressure()<sd.getPressure()) {
             	alertService.createAlert(asset.getAsset_id(), AlertType.valueOf("PRESSURE_HIGH"), "Pressure is too high , Try with different value.");
+            	throw new InvalidSensorDataException("Invalid Pressure Value !");
             }else if(asset.getThresholdTemp()<sd.getTemperature()) {
             	alertService.createAlert(asset.getAsset_id(), AlertType.valueOf("TEMP_HIGH"), "Try entering lower temperature");
+            	throw new InvalidSensorDataException("Invalid Temperature Value !");
             	
             }
             
-            
             return true;
         }catch (Exception e){
-            System.out.println("Error Sending SensorData !!!");
-            return false;
+            throw new InvalidSensorDataException("This SensorData cannot be Sent ! Try Entering a new value ");
+        }
+        finally {
+return false;
         }
     }
 }
