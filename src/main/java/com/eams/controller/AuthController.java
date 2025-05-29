@@ -1,5 +1,7 @@
 package com.eams.controller;
 
+import com.eams.dtos.UserLoginDTO;
+import com.eams.exception.InvalidUserRoleException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -18,21 +20,26 @@ import jakarta.validation.Valid;
 public class AuthController {
 	
 	@Autowired
-	private  UserAuthService authservice;
-	
-	//function to register user 
+	private  UserAuthService authService;
+
+    public AuthController(UserAuthService authservice) {
+        this.authService = authservice;
+    }
+
+    //function to register user
 	@PostMapping("/register")
-	public ResponseEntity<User> registerUser(@RequestBody @Valid User u){
-		return ResponseEntity.ok(authservice.registerUser(u));
+	public ResponseEntity<UserAuthDTO> registerUser(@RequestBody @Valid User u){
+
+		return ResponseEntity.ok(authService.registerUser(u));
 	}
-	//function to login user
-	
+
+	//function to login user with
 	@PostMapping("/login")
-	public String loginUser(@RequestBody @Valid UserAuthDTO user) {
-		if(authservice.loginUser(user)) {
-			return "Successully logged in ";
+	public String loginUser(@RequestBody @Valid UserLoginDTO user) {
+		if(authService.loginUser(user)) {
+			return "Successully logged in with email : " + user.getEmail();
 		}
-		return "Invalid Credentials !!";
+		return "Failed Login !!";
 	}
 
 }

@@ -10,12 +10,13 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 public class SensorData {
-
+	
+	//Sensor_data_id is primary key and auto generated
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long sensor_data_id;
 
-    
+    // asset_id is foreign key 
     @Column(name = "asset_id", nullable = false)
     private Long asset_id;
     

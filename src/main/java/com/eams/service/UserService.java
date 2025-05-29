@@ -18,7 +18,7 @@ public class UserService {
 	@Autowired
     private  UserRepository userRepository;
 	
-	// the method checks for role if the role matches manager, then it returns all the users ,or else if the role is not manager ,then the method throws exception
+	// the method  returns all the users ,or else if the role is not manager ,then the method throws exception
 	public  List<UserDTO> getAllUser(){
 		
 		return userRepository.findAll().stream()
@@ -43,8 +43,29 @@ public class UserService {
         return false;
     }
     
+    //Deletes the user only when the role is manager 
+    public boolean deleteUser(String reqPersonMail,Long userid) {
+    	try {
+    		User u=userRepository.findByEmail(reqPersonMail).orElseThrow();
+    		
+    		if(u.getRole() == Role.MANAGER) {
+    			userRepository.deleteById(userid);
+        		return true;
+    		}
+    		
+    	
+    	}    	
+    		catch(Exception e) {
+    			System.out.println("Error while deleting: "+e.getMessage());
+    			
+    		}
+    	return false;
+    }
+    
     //Finds the user by user email
     public User getbyEmail(String email){
         return userRepository.findByEmail(email).orElse(null);
     }
+    
+    
 }

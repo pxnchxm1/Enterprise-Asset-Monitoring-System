@@ -35,8 +35,7 @@ public class User {
 	@Pattern(regexp="^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[!@#$%^&*]).{8,}$",message="Give a strong and valid passsword ! ")
 	@NotNull(message="Password should not be null")
 	private String password;
-	@Enumerated(EnumType.STRING)
-	
+	@Enumerated(EnumType.STRING)	
 	private Role role;
 
 }
