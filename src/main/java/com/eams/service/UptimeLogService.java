@@ -9,12 +9,13 @@ import org.springframework.stereotype.Service;
 
 import com.eams.entity.Asset;
 import com.eams.entity.UptimeLog;
+import com.eams.exception.AssetNotFoundException;
 import com.eams.repository.AssetRepository;
 import com.eams.repository.UptimeLogRepository;
 
 //Makes the class as Service component
 @Service
-public class UptimeLogService {
+public class UptimeLogService implements UptimeLogServiceInterface {
 	
 	//Dependency Injection - Automatically injects objects of UptimeLogRepository
 	@Autowired   
@@ -25,13 +26,15 @@ public class UptimeLogService {
 	private AssetRepository assetRepo;
 	
 	public UptimeLog createlog(Long asset_id, UptimeLog log) {
-		Asset asset = assetRepo.findById(asset_id).orElseThrow();
-		UptimeLog newlog = new UptimeLog();
-		newlog.setAsset(asset);
-		newlog.setEndTime(log.getEndTime());
-		newlog.setStartTime(LocalDateTime.now());
-		newlog.setUptimeLogStatus(log.getUptimeLogStatus());
-		return repo.save(newlog);
+			Asset asset = assetRepo.findById(asset_id)
+					.orElseThrow(() -> new AssetNotFoundException("Asset with ID " + asset_id + " not found"));
+			UptimeLog newlog = new UptimeLog();
+			newlog.setAsset(asset);
+			newlog.setEndTime(log.getEndTime());
+			newlog.setStartTime(LocalDateTime.now());
+			newlog.setUptimeLogStatus(log.getUptimeLogStatus());
+			return repo.save(newlog);
+		
 	}
 	public List<UptimeLog> getLogs(Long asset_id){
 		

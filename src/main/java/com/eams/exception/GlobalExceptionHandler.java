@@ -48,4 +48,9 @@ public class GlobalExceptionHandler {
 		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Invalid User. User should be MANAGER|OPERATOR");
 	}
 
+	//Exception to handle if asset_id is not found
+	@ExceptionHandler(AssetNotFoundException.class)
+	public ResponseEntity<String> handleAssetNotFound(AssetNotFoundException ax){
+		return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(ax.getMessage());
+	}
 }
