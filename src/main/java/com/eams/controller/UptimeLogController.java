@@ -2,6 +2,8 @@ package com.eams.controller;
 import java.util.List;
 
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -14,6 +16,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.eams.entity.UptimeLog;
 import com.eams.service.UptimeLogService;
 
+
+@Slf4j
 //Marking this class as REST CONTROLLER. It returns JSON/XML
 @RestController
 
@@ -50,7 +54,7 @@ public class UptimeLogController {
 	//End point to get all logs
 	@GetMapping
 	public List<UptimeLog> getAllLogs(){
-
+        log.info("successfully retrieved all logs !");
 		return service.getAllLogs();
 	}
 }
