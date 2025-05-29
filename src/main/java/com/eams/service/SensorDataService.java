@@ -6,6 +6,7 @@ import com.eams.exception.InvalidSensorDataException;
 import com.eams.repository.AssetRepository;
 import com.eams.repository.SensorDataRepository;
 
+import lombok.extern.slf4j.Slf4j;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,18 +16,20 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
+@Slf4j
 @Service
 public class SensorDataService {
-    @Autowired
     private SensorDataRepository sdr;
-    @Autowired
+    
     private AssetRepository apr;
     
-    @Autowired
     private AlertService alertService;
-
-    public SensorDataService(SensorDataRepository sensorDataRepository) {
+    
+    @Autowired
+    public SensorDataService(SensorDataRepository sensorDataRepository,AssetRepository assetRepo, AlertService as) {
         this.sdr = sensorDataRepository;
+        this.apr = assetRepo;
+        this.alertService=as;
     }
     public List<SensorData> getAllSensorData(){
     	return sdr.findAll();
@@ -47,7 +50,7 @@ public class SensorDataService {
 		 if(data.getPressure()<0) {
          	
          	throw new InvalidSensorDataException("Invalid Pressure Value !");
-         }else if(data.getTemperature()<0) {
+         }if(data.getTemperature()<0) {
          	
          	throw new InvalidSensorDataException("Invalid Temperature Value !");
          	
@@ -64,11 +67,14 @@ public class SensorDataService {
              sd.getPressure();
              sd.getTemperature();
              sdr.save(sd);
+             log.info("Sensor data saved with pressure: {}, temperature: {}", sd.getPressure(), sd.getTemperature());
              Asset asset = apr.findById(sd.getAsset_id()).orElseThrow();
              if(asset.getThresholdPressure()<sd.getPressure()) {
+            	 log.warn("created alert for high pressure !!! ");
              	alertService.createAlert(asset.getAsset_id(), AlertType.valueOf("PRESSURE_HIGH"), "Pressure is too high , Try with different value.");
         
-             }else if(asset.getThresholdTemp()<sd.getTemperature()) {
+             }if(asset.getThresholdTemp()<sd.getTemperature()) {
+            	 log.warn("created alert for high temperature !!! ");
              	alertService.createAlert(asset.getAsset_id(), AlertType.valueOf("TEMP_HIGH"), "Try entering lower temperature");	
              	
              }
