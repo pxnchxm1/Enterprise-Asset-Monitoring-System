@@ -4,6 +4,8 @@ package com.eams.service;
 import com.eams.dtos.UserDTO;
 import com.eams.entity.Role;
 import com.eams.entity.User;
+import com.eams.exception.AssetNotFoundException;
+import com.eams.exception.InvalidUserRoleException;
 import com.eams.mapper.UserMapper;
 import com.eams.repository.UserRepository;
 
@@ -12,6 +14,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -38,8 +41,8 @@ public class UserService implements UserServiceInterface{
    
 	public boolean updateUserRole(String reqPersonMail,Long user_id, String role){
     	try {
-        User u=userRepository.findByEmail(reqPersonMail).orElseThrow();
-        User user = userRepository.findById(user_id).orElseThrow();
+        User u=userRepository.findByEmail(reqPersonMail).orElseThrow(()-> new InvalidUserRoleException("Only manager can update user"));;
+        User user = userRepository.findById(user_id).orElseThrow(()-> new NoSuchElementException("User not found"));
         if(u.getRole() == Role.MANAGER) {
         	user.setRole(Role.valueOf(role.toUpperCase()));
             userRepository.save(u);
