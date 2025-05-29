@@ -22,8 +22,8 @@ public class AssetController {
     private AssetService assetService;
 //This method is to creating new asset
     @PostMapping
-    public boolean create(@Valid @RequestBody AssetDTO dto) {
-        return assetService.createAsset(dto);
+    public boolean create(@Valid @RequestBody AssetDTO dto,@RequestParam String creatingPerson) {
+        return assetService.createAsset(dto, creatingPerson);
     }
 //This method is to get details of assets
     @GetMapping
@@ -38,9 +38,9 @@ public class AssetController {
 
 //This method is is edit the details
     @PutMapping("/{id}")
-    public String update(@PathVariable Long id, @Valid @RequestBody AssetDTO dto) {
+    public String update(@PathVariable Long id, @Valid @RequestBody Asset asset) {
 
-        return assetService.updateAsset(id, dto);
+        return assetService.updateAsset(id, asset);
     }
 
 //This method is to delete to the asset by ID

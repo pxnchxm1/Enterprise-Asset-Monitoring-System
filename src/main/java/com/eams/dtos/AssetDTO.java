@@ -1,5 +1,7 @@
 package com.eams.dtos;
 
+import com.eams.entity.User;
+
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotNull;
@@ -27,7 +29,7 @@ public class AssetDTO {
     @Max(value = 300, message = "Threshold pressure must not exceed 300")
 	private double thresholdPressure;
 	@NotNull(message="AssignedTo can't be null")
-	private Long assignedTo;
+	private User assignedTo;
 	
 	
 }

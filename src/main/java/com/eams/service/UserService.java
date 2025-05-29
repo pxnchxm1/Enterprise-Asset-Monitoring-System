@@ -4,6 +4,7 @@ package com.eams.service;
 import com.eams.dtos.UserDTO;
 import com.eams.entity.Role;
 import com.eams.entity.User;
+import com.eams.exception.InvalidUserRoleException;
 import com.eams.mapper.UserMapper;
 import com.eams.repository.UserRepository;
 
@@ -56,20 +57,20 @@ public class UserService implements UserServiceInterface{
     //Deletes the user only when the role is manager 
     
     public boolean deleteUser(String reqPersonMail,Long userid) {
-    	try {
-    		User u=userRepository.findByEmail(reqPersonMail).orElseThrow();
+    		User u=userRepository.findByEmail(reqPersonMail).orElseThrow(
+    				()-> new RuntimeException("Manager with mail : " + reqPersonMail + " doesnt exist !")
+    				);
+    		if(u.getRole()!=Role.MANAGER)
+    			throw new InvalidUserRoleException("Only manager can delete a user !");
     		
-    		if(u.getRole() == Role.MANAGER) {
-    			userRepository.deleteById(userid);
-    			log.info("User is deleted by Manager");
-        		return true;
-    		} 	
-    	}    	
-    		catch(Exception e) {
-    			log.error("Error while deleting: "+e.getMessage());
-    			
-    		}
-    	return false;
+    		if (!userRepository.existsById(userid)) {
+    	        log.error("User with id: " + userid + " does not exist!");
+    	        throw new RuntimeException("User with id: " + userid + " does not exist!");
+    	    }
+    	    userRepository.deleteById(userid);
+    	    log.info("User is deleted by Manager");
+    	    return true;
+    	    
     }
     
     //Finds the user by user email
