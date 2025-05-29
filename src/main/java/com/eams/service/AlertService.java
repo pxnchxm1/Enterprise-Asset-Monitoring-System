@@ -13,7 +13,7 @@ import com.eams.repository.AlertRepository;
 import com.eams.repository.AssetRepository;
 
 @Service
-public class AlertService {
+public class AlertService implements AlertServiceInterface{
 	
 	@Autowired
 	private AlertRepository alertRepo;
