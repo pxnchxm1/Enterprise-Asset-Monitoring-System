@@ -12,6 +12,9 @@ import com.eams.entity.User;
 import com.eams.repository.AssetRepository;
 import com.eams.repository.UserRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @Service
 public class AssetService {
 	
@@ -29,6 +32,7 @@ public class AssetService {
 
 	    
 	        if (user.getRole() != Role.MANAGER) {
+	        	log.warn("User with ID {} is not a MANAGER", dto.getAssignedTo());
 	            throw new RuntimeException("User with ID " + dto.getAssignedTo() + " is not a MANAGER");
 	        }
 
@@ -43,9 +47,11 @@ public class AssetService {
 	                .build();
 
 	        assetRepository.save(asset);
+	        log.info("Asset created successfully and assigned to user ID {}", dto.getAssignedTo());
 	        return true;
 
 	    } catch (Exception e) {
+	    	 log.error("Error while creating asset: {}", e.getMessage());
 	
 	        System.out.println("Error while creating asset: " + e.getMessage());
 	        return false;
@@ -54,12 +60,17 @@ public class AssetService {
 
 	// get all assets from db
 	public List<Asset> getAllAssets() {
+		log.info("Fetching all assets from database");
+
+		
 		return assetRepository.findAll();
 		
 	}
 	
 	// get asset by ID
 	public Asset getAssetById(Long id) {
+		log.info("Fetching asset with ID {}", id);
+
 		return assetRepository.findById(id).orElseThrow();
 	}
 	
@@ -74,12 +85,18 @@ public class AssetService {
 	                .orElseThrow();
 	        
 	        assetRepository.deleteById(id);
+	        log.info("Asset with ID {} deleted by user ID {}", id, userid);
+
 	        return "Asset deleted successfully.";
 		    }
 		    else {
+		    	log.warn("User ID {} attempted to delete asset without MANAGER role", userid);
+
 		    	return "Only Manager can delete assests";
 		    }
 	    }  catch (Exception ex) {
+	    	log.error("Error deleting asset: {}", ex.getMessage());
+
 	        return "Error deleting asset: " + ex.getMessage();
 	    }
 	}
@@ -101,6 +118,8 @@ public class AssetService {
 	        asset.setAssignedTo(user);
 
 	        assetRepository.save(asset);
+	        log.info("Asset with ID {} updated successfully", id);
+
 	        return "Asset updated successfully.";
 	        
 	    }  catch (Exception ex) {
