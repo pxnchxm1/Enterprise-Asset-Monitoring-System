@@ -20,9 +20,17 @@ public class UserController {
     private UserService us;
     
     //This method is for fetching all the users from the user database
-	@GetMapping 
-    public ResponseEntity<List<UserDTO>> getAllUsers(){
-        return ResponseEntity.ok(us.getAllUser());
+	@GetMapping("/reqPersonMail")
+    public ResponseEntity<?> getAllUsers(@RequestParam String reqPersonMail){
+		try {
+			List<UserDTO> users=us.getAllUser(reqPersonMail);
+			return ResponseEntity.ok(users);
+		}catch(SecurityException e) {
+			return ResponseEntity.status(HttpStatus.FORBIDDEN).body("Only manager can fetch users");
+		}catch(Exception e) {
+			return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An unexpected error");
+		}
+       
     }
 	
 	//Here we are checking for the values for validation, the method also validates the attributes below

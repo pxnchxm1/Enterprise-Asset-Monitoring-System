@@ -14,20 +14,25 @@ import java.util.stream.Collectors;
 
 
 @Service
-public class UserService {
+public class UserService implements UserServiceInterface{
 	@Autowired
     private  UserRepository userRepository;
 	
 	// the method  returns all the users ,or else if the role is not manager ,then the method throws exception
-	public  List<UserDTO> getAllUser(){
-		
+	
+	public  List<UserDTO> getAllUser(String reqPersonMail){
+		User requestMail=userRepository.findByEmail(reqPersonMail).orElseThrow();
+		if(requestMail.getRole() != Role.MANAGER) {
+			throw new SecurityException("Only Manager can get all users");
+		}
 		return userRepository.findAll().stream()
                 .map(UserMapper::userToDto)
-                .collect(Collectors.toList());			
+                .collect(Collectors.toList());
 	}
 	
 	//This method finds the user by userid, if found checks if the role is manager,if manager ,then updates the user role and if user is not manager ,then the method throws exceptions
-    public boolean updateUserRole(String reqPersonMail,Long user_id, String role){
+   
+	public boolean updateUserRole(String reqPersonMail,Long user_id, String role){
     	try {
         User u=userRepository.findByEmail(reqPersonMail).orElseThrow();
         User user = userRepository.findById(user_id).orElseThrow();
@@ -44,6 +49,7 @@ public class UserService {
     }
     
     //Deletes the user only when the role is manager 
+    
     public boolean deleteUser(String reqPersonMail,Long userid) {
     	try {
     		User u=userRepository.findByEmail(reqPersonMail).orElseThrow();
@@ -51,9 +57,7 @@ public class UserService {
     		if(u.getRole() == Role.MANAGER) {
     			userRepository.deleteById(userid);
         		return true;
-    		}
-    		
-    	
+    		} 	
     	}    	
     		catch(Exception e) {
     			System.out.println("Error while deleting: "+e.getMessage());
@@ -63,6 +67,7 @@ public class UserService {
     }
     
     //Finds the user by user email
+    @Override
     public User getbyEmail(String email){
         return userRepository.findByEmail(email).orElse(null);
     }
