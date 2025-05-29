@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.eams.entity.Asset;
 import com.eams.entity.MaintenanceLog;
+import com.eams.exception.AssetNotFoundException;
 import com.eams.repository.MaintenanceLogRepository;
 import com.eams.repository.AssetRepository;
 
@@ -19,7 +20,8 @@ public class MaintenanceLogService implements MaintenanceLogServiceInterface {
     private AssetRepository assetRepo;
 
     public MaintenanceLog schedule(Long assetId, MaintenanceLog log){
-        Asset asset = assetRepo.findById(assetId).orElseThrow();
+        Asset asset = assetRepo.findById(assetId)
+        		.orElseThrow(()-> new AssetNotFoundException("Asset with ID " + assetId + " not found"));
         MaintenanceLog l =new MaintenanceLog();
         l.setAsset_id(asset.getAsset_id());
         l.setCompletedDate(log.getCompletedDate());
@@ -29,7 +31,9 @@ public class MaintenanceLogService implements MaintenanceLogServiceInterface {
     }
 
     public List<MaintenanceLog> getByAssetId(Long assetId) {
-    	Asset asset = assetRepo.findById(assetId).orElseThrow();
+    	
+    	Asset asset = assetRepo.findById(assetId)
+        		.orElseThrow(()-> new AssetNotFoundException("Asset with ID " + assetId + " not found"));
         List<MaintenanceLog> requiredLogs = repo.findAll().stream().filter(x->x.getAsset_id().equals(asset.getAsset_id())).collect(Collectors.toList());
         return requiredLogs;
     }
