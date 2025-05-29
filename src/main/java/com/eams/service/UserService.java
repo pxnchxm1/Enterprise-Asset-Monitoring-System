@@ -7,12 +7,14 @@ import com.eams.entity.User;
 import com.eams.mapper.UserMapper;
 import com.eams.repository.UserRepository;
 
+import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
 
-
+@Slf4j
 @Service
 public class UserService implements UserServiceInterface{
 	@Autowired
@@ -23,8 +25,10 @@ public class UserService implements UserServiceInterface{
 	public  List<UserDTO> getAllUser(String reqPersonMail){
 		User requestMail=userRepository.findByEmail(reqPersonMail).orElseThrow();
 		if(requestMail.getRole() != Role.MANAGER) {
+			log.warn("Only manager has access to fetch all the users");
 			throw new SecurityException("Only Manager can get all users");
 		}
+		log.info("Users are fetched by :"+reqPersonMail);
 		return userRepository.findAll().stream()
                 .map(UserMapper::userToDto)
                 .collect(Collectors.toList());
@@ -39,11 +43,12 @@ public class UserService implements UserServiceInterface{
         if(u.getRole() == Role.MANAGER) {
         	user.setRole(Role.valueOf(role.toUpperCase()));
             userRepository.save(u);
+            log.info("User updated successfully");
             return true;
         }
     	}
         catch(Exception e) {
-        	System.out.println("Error while updating user role: " + e.getMessage());
+        	log.error("Error while updating user role: " + e.getMessage());
         }
         return false;
     }
@@ -56,11 +61,12 @@ public class UserService implements UserServiceInterface{
     		
     		if(u.getRole() == Role.MANAGER) {
     			userRepository.deleteById(userid);
+    			log.info("User is deleted by Manager");
         		return true;
     		} 	
     	}    	
     		catch(Exception e) {
-    			System.out.println("Error while deleting: "+e.getMessage());
+    			log.error("Error while deleting: "+e.getMessage());
     			
     		}
     	return false;
