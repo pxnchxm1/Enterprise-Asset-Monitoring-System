@@ -15,13 +15,16 @@ import com.eams.exception.UserAlreadyExistsException;
 @Service
 public class UserAuthService implements UserAuthServiceInterface {
 	
-	@Autowired
+	
 	private UserRepository userRepo;
-	@Autowired 
+	
 	private PasswordEncoderUtility passwordEncoder;
-    public UserAuthService(UserRepository userRepo) {
-        this.userRepo = userRepo;
-    }
+    
+	 @Autowired
+	    public UserAuthService(UserRepository userRepo, PasswordEncoderUtility passwordEncoder) {
+	        this.userRepo = userRepo;
+	        this.passwordEncoder = passwordEncoder;
+	    }
 
     public UserAuthDTO registerUser(User user) {
 		if(userRepo.existsByEmail(user.getEmail())) {
