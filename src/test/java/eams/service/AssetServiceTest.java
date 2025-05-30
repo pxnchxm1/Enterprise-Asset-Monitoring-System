@@ -32,15 +32,24 @@ public class AssetServiceTest {
 
     private AssetDTO assetDTO;
     private User managerUser;
+    private User assignedUser; // ✅ Add this
     private Asset asset;
+    private String managerMail;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
+        managerMail = "manager12@gmail.com";
 
         managerUser = new User();
         managerUser.setUser_id(1L);
         managerUser.setRole(Role.MANAGER);
+        managerUser.setEmail(managerMail);
+
+        assignedUser = new User(); // ✅ Initialize assignedUser
+        assignedUser.setUser_id(2L);
+        assignedUser.setRole(Role.OPERATOR);
+        assignedUser.setEmail("assigned@gmail.com");
 
         assetDTO = new AssetDTO();
         assetDTO.setAsset_name("Pump");
@@ -48,7 +57,7 @@ public class AssetServiceTest {
         assetDTO.setLocation("Plant A");
         assetDTO.setThresholdTemp(75.0);
         assetDTO.setThresholdPressure(30.0);
-        assetDTO.setAssignedTo(1L);
+        assetDTO.setAssignedTo(2L);
 
         asset = new Asset();
         asset.setAsset_name("Pump");
@@ -61,10 +70,12 @@ public class AssetServiceTest {
 
     @Test
     public void testCreateAsset_Success() {
-        when(userRepository.findById(1L)).thenReturn(Optional.of(managerUser));
-        when(assetRepository.save(any(Asset.class))).thenReturn(asset);
+    	when(userRepository.findByEmail(managerMail)).thenReturn(Optional.of(managerUser));
+    	when(userRepository.findById(2L)).thenReturn(Optional.of(assignedUser));
+    	when(assetRepository.save(any(Asset.class))).thenReturn(asset);
 
-        boolean result = assetService.createAsset(assetDTO);
+
+        boolean result = assetService.createAsset(assetDTO, managerMail);
 
         assertTrue(result);
         verify(assetRepository, times(1)).save(any(Asset.class));
@@ -104,10 +115,18 @@ public class AssetServiceTest {
     @Test
     public void testUpdateAsset_Success() {
         when(assetRepository.findById(2L)).thenReturn(Optional.of(asset));
-        when(userRepository.findById(1L)).thenReturn(Optional.of(managerUser));
+        when(userRepository.findByEmail(managerMail)).thenReturn(Optional.of(managerUser));
         when(assetRepository.save(any(Asset.class))).thenReturn(asset);
 
-        String result = assetService.updateAsset(2L, assetDTO);
+        Asset updatedAsset = new Asset();
+        updatedAsset.setAsset_name("Updated Pump");
+        updatedAsset.setAsset_type("Hydraulic");
+        updatedAsset.setLocation("Plant B");
+        updatedAsset.setThresholdTemp(85.0);
+        updatedAsset.setThresholdPressure(40.0);
+        updatedAsset.setAssignedTo(assignedUser); // ✅ Now this won't throw error
+
+        String result = assetService.updateAsset(2L, updatedAsset, managerMail);
 
         assertEquals("Asset updated successfully.", result);
         verify(assetRepository, times(1)).save(any(Asset.class));

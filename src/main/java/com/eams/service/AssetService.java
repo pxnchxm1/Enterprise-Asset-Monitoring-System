@@ -9,6 +9,9 @@ import com.eams.dtos.AssetDTO;
 import com.eams.entity.Asset;
 import com.eams.entity.Role;
 import com.eams.entity.User;
+import com.eams.exception.AssetNotFoundException;
+import com.eams.exception.InvalidUserRoleException;
+import com.eams.exception.ManagerNotFoundException;
 import com.eams.repository.AssetRepository;
 import com.eams.repository.UserRepository;
 
@@ -24,39 +27,35 @@ public class AssetService {
 	@Autowired 
 	private UserRepository userRepository;
 
-	public boolean createAsset(AssetDTO dto) {
-	    try {
-	       
-	        User user = userRepository.findById(dto.getAssignedTo())
-	                .orElseThrow(() -> new RuntimeException("User not found with ID: " + dto.getAssignedTo()));
+	public boolean createAsset(AssetDTO dto, String creatingPerson) {
 
-	    
-	        if (user.getRole() != Role.MANAGER) {
-	        	log.warn("User with ID {} is not a MANAGER", dto.getAssignedTo());
-	            throw new RuntimeException("User with ID " + dto.getAssignedTo() + " is not a MANAGER");
-	        }
+	    User user = userRepository.findByEmail(creatingPerson)
+	            .orElseThrow(() -> new InvalidUserRoleException("Manager with given mail is invalid. Doesnt exist!"));
+
+	    User assigned = userRepository.findById(dto.getAssignedTo())
+	            .orElseThrow(() -> new InvalidUserRoleException("User with ID " + dto.getAssignedTo() + " doesn't exist!"));
 
 
-	        Asset asset = Asset.builder()
-	                .asset_name(dto.getAsset_name())
-	                .asset_type(dto.getAsset_type())
-	                .location(dto.getLocation())
-	                .thresholdTemp(dto.getThresholdTemp())
-	                .thresholdPressure(dto.getThresholdPressure())
-	                .assignedTo(user)
-	                .build();
-
-	        assetRepository.save(asset);
-	        log.info("Asset created successfully and assigned to user ID {}", dto.getAssignedTo());
-	        return true;
-
-	    } catch (Exception e) {
-	    	 log.error("Error while creating asset: {}", e.getMessage());
-	
-	        System.out.println("Error while creating asset: " + e.getMessage());
-	        return false;
+	    if (user.getRole() != Role.MANAGER) {
+	        log.warn("User with mail {} is not a MANAGER", creatingPerson);
+	        throw new InvalidUserRoleException("User with mail " + creatingPerson + " is not a MANAGER");
 	    }
+
+	    Asset asset = Asset.builder()
+	            .asset_name(dto.getAsset_name())
+	            .asset_type(dto.getAsset_type())
+	            .location(dto.getLocation())
+	            .thresholdTemp(dto.getThresholdTemp())
+	            .thresholdPressure(dto.getThresholdPressure())
+	            .assignedTo(assigned)
+	            .build();
+
+	    assetRepository.save(asset);
+
+
+	    return true;
 	}
+
 
 	// get all assets from db
 	public List<Asset> getAllAssets() {
@@ -80,10 +79,7 @@ public class AssetService {
 	    try {
 	    	 User user = userRepository.findById(userid)
 		                .orElseThrow();
-		    if(user.getRole()==Role.MANAGER) {
-	        Asset as = assetRepository.findById(id)
-	                .orElseThrow();
-	        
+		    if(user.getRole()==Role.MANAGER) { 
 	        assetRepository.deleteById(id);
 	        log.info("Asset with ID {} deleted by user ID {}", id, userid);
 
@@ -102,28 +98,26 @@ public class AssetService {
 	}
 	
 	// update asset
-	public String updateAsset(Long id, AssetDTO dto) {
-	    try {
-	        Asset asset = assetRepository.findById(id)
-	                .orElseThrow();
-
-	        User user = userRepository.findById(dto.getAssignedTo())
-	                .orElseThrow();
-	
-	        asset.setAsset_name(dto.getAsset_name());
-	        asset.setAsset_type(dto.getAsset_type());
-	        asset.setLocation(dto.getLocation());
-	        asset.setThresholdTemp(dto.getThresholdTemp());
-	        asset.setThresholdPressure(dto.getThresholdPressure());
-	        asset.setAssignedTo(user);
-
-	        assetRepository.save(asset);
-	        log.info("Asset with ID {} updated successfully", id);
-
-	        return "Asset updated successfully.";
-	        
-	    }  catch (Exception ex) {
-	        return "Error updating asset: " + ex.getMessage();
+	public String updateAsset(Long assetId, Asset updatedAsset, String managerEmail) {
+	    User manager = userRepository.findByEmail(managerEmail)
+	                      .orElseThrow(() -> new ManagerNotFoundException("Manager not found"));
+	    if (!Role.MANAGER.equals(manager.getRole())) {
+	        throw new SecurityException("Only MANAGER can update assets.");
 	    }
+
+	    Asset existingAsset = assetRepository.findById(assetId)
+	                              .orElseThrow(() -> new RuntimeException("Asset not found"));
+	    
+	    existingAsset.setAsset_name(updatedAsset.getAsset_name());
+	    existingAsset.setAsset_type(updatedAsset.getAsset_type());
+	    existingAsset.setLocation(updatedAsset.getLocation());
+	    existingAsset.setThresholdTemp(updatedAsset.getThresholdTemp());
+	    existingAsset.setThresholdPressure(updatedAsset.getThresholdPressure());
+	    existingAsset.setAssignedTo(updatedAsset.getAssignedTo());
+
+	    assetRepository.save(existingAsset);
+	    return "Asset updated successfully.";
 	}
+
+
 }
