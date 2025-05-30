@@ -21,9 +21,9 @@ public class AssetController {
     @Autowired
     private AssetService assetService;
 //This method is to creating new asset
-    @PostMapping
-    public boolean create(@Valid @RequestBody AssetDTO dto,@RequestParam String creatingPerson) {
-        return assetService.createAsset(dto, creatingPerson);
+    @PostMapping("/creatingPerson/{person}")
+    public boolean create(@Valid @RequestBody AssetDTO dto,@PathVariable String person) {
+        return assetService.createAsset(dto, person);
     }
 //This method is to get details of assets
     @GetMapping
