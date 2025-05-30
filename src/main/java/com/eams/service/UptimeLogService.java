@@ -37,7 +37,7 @@ public class UptimeLogService implements UptimeLogServiceInterface {
 	public void methodToScheduleUptimeLogs() {
 		
 	}
-	@Scheduled(fixedRate=10000)
+	@Scheduled(fixedRate = 120000)
 	public void createlog() {
 			List<Alert> alerts = alertRepo.findAll();
 			for(Alert al : alerts) {
@@ -47,7 +47,7 @@ public class UptimeLogService implements UptimeLogServiceInterface {
 				UptimeLog newlog = new UptimeLog();
 				newlog.setAsset(asset);
 				newlog.setStartTime(LocalDateTime.now());
-				newlog.setEndTime(LocalDateTime.now().plusSeconds(10));
+				newlog.setEndTime(LocalDateTime.now().plusMinutes(2));
 				
 				if(al.getStatus()==AlertStatus.ACTIVE) {
 					newlog.setUptimeLogStatus(UpTimeLogStatus.DOWN);
