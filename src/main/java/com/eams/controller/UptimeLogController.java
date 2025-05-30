@@ -33,15 +33,10 @@ public class UptimeLogController {
 	private UptimeLogService service;
 	
 	//End point to create new UptimeLog entry 
-	@PostMapping("/asset/{asset_id}")
-	public ResponseEntity<UptimeLog> log(
-			
-			//Getting asset_id from URL
-			@PathVariable Long asset_id,
-			
-			@RequestBody @Valid UptimeLog log
+	@PostMapping("/asset/")    // since it is scheduled function im checking status every 10 second and creating log..hence no postmapping explicit
+	public void log(
 	){
-		return ResponseEntity.ok(service.createlog(asset_id, log));
+		service.createlog();
 	}
 	
 	//End point to get logs for the given asset
