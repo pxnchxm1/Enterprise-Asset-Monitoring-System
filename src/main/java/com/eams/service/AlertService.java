@@ -9,6 +9,7 @@ import com.eams.entity.Alert;
 import com.eams.entity.AlertStatus;
 import com.eams.entity.AlertType;
 import com.eams.entity.Asset;
+import com.eams.exception.AssetNotFoundException;
 import com.eams.repository.AlertRepository;
 import com.eams.repository.AssetRepository;
 
@@ -34,9 +35,11 @@ public class AlertService implements AlertServiceInterface{
 	public List<Alert> getAll(){
 		return alertRepo.findAll();
 	}
+	//method to resolve alert
 	public Alert resolveAlert(Long id) {
-		Alert alert = alertRepo.findById(id).orElseThrow();
+		Alert alert = alertRepo.findById(id).orElseThrow(()->new AssetNotFoundException("asset is not found"));
 		alert.setStatus(AlertStatus.RESOLVED);
 		return alertRepo.save(alert);
 	}
+	
 }
