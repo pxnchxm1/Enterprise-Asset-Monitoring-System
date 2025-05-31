@@ -4,7 +4,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.DeleteMapping;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import com.eams.dtos.AssetDTO;
 import com.eams.entity.Asset;
@@ -37,10 +44,9 @@ public class AssetController {
     }
 
 //This method is is edit the details
-    @PutMapping("/{id}")
-    public String update(@PathVariable Long id, @Valid @RequestBody Asset asset) {
-
-        return assetService.updateAsset(id, asset);
+    @PutMapping("/{id}/manager/{managerMail}")
+    public String update(@PathVariable Long id, @Valid @RequestBody Asset asset,@PathVariable String managerMail) {
+        return assetService.updateAsset(id, asset,managerMail);
     }
 
 //This method is to delete to the asset by ID

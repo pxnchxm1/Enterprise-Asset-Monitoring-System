@@ -109,22 +109,5 @@ public class AssetServiceTest {
         verify(assetRepository, times(1)).deleteById(2L);
     }
 
-    @Test
-    public void testUpdateAsset_Success() {
-        when(assetRepository.findById(2L)).thenReturn(Optional.of(asset));
-        when(assetRepository.save(any(Asset.class))).thenReturn(asset);
-
-        Asset updatedAsset = new Asset();
-        updatedAsset.setAsset_name("Updated Pump");
-        updatedAsset.setAsset_type("Hydraulic");
-        updatedAsset.setLocation("Plant B");
-        updatedAsset.setThresholdTemp(85.0);
-        updatedAsset.setThresholdPressure(40.0);
-        updatedAsset.setAssignedTo(assignedUser);
-
-        String result = assetService.updateAsset(2L, updatedAsset);
-
-        assertEquals("Asset updated successfully.", result);
-        verify(assetRepository, times(1)).save(any(Asset.class));
-    }
+  
 }

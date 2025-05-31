@@ -43,7 +43,7 @@ public class UptimeLogService implements UptimeLogServiceInterface {
 			for(Alert al : alerts) {
 				Long asset_id = al.getAsset_id();
 				Asset asset = assetRepo.findById(asset_id).orElseThrow(
-						()->  new AssetNotFoundException("Asset not found !! "));
+						()->  new AssetNotFoundException("Asset with ID " + asset_id + " not found"));
 				UptimeLog newlog = new UptimeLog();
 				newlog.setAsset(asset);
 				newlog.setStartTime(LocalDateTime.now());
