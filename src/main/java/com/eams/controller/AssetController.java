@@ -47,6 +47,10 @@ public class AssetController {
     public String update(@PathVariable Long id, @Valid @RequestBody Asset asset,@PathVariable String managerMail) {
         return assetService.updateAsset(id, asset,managerMail);
     }
+    @PostMapping("/resolve/{id}/manager/{managerMail}")
+    public String resolveAlertAsAdmin(@PathVariable Long id,@PathVariable String managerMail) {
+        return assetService.resolveAlertAsManager(id, managerMail);
+    }
 //This method is to delete to the asset by ID
     @DeleteMapping("/{id}/user/{userid}")
     public String delete(@PathVariable Long id,@PathVariable Long userid) {

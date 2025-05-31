@@ -26,6 +26,9 @@ public class AssetService {
 	
 	@Autowired 
 	private UserRepository userRepository;
+	
+	@Autowired
+	private AlertService as;
 
 	public boolean createAsset(AssetDTO dto, String creatingPerson) {
 
@@ -117,6 +120,22 @@ public class AssetService {
 
 	    assetRepository.save(existingAsset);
 	    return "Asset updated successfully.";
+	}
+	
+	public String resolveAlertAsManager(Long assetId,String managerMail) {
+		  User manager = userRepository.findByEmail(managerMail)
+                  .orElseThrow(() -> new ManagerNotFoundException("Manager not found"));
+		  Asset existingAsset = assetRepository.findById(assetId)
+				  .orElseThrow(() -> new AssetNotFoundException("Asset not found"));
+if (!Role.MANAGER.equals(manager.getRole())) {
+    throw new SecurityException("Only MANAGER can resolve alerts.");
+    
+}
+
+
+as.resolveAlert(existingAsset.getAsset_id());
+  return "resolved alert successfully";
+		
 	}
 
 
