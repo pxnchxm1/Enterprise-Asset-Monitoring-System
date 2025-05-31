@@ -42,13 +42,11 @@ public class AssetController {
     public Asset getById(@PathVariable Long id) {
         return assetService.getAssetById(id);
     }
-
 //This method is is edit the details
     @PutMapping("/{id}/manager/{managerMail}")
     public String update(@PathVariable Long id, @Valid @RequestBody Asset asset,@PathVariable String managerMail) {
         return assetService.updateAsset(id, asset,managerMail);
     }
-
 //This method is to delete to the asset by ID
     @DeleteMapping("/{id}/user/{userid}")
     public String delete(@PathVariable Long id,@PathVariable Long userid) {
