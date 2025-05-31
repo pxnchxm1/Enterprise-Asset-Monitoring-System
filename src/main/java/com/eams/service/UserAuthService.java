@@ -2,7 +2,6 @@ package com.eams.service;
 
 import com.eams.dtos.UserLoginDTO;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.eams.dtos.UserAuthDTO;
@@ -20,8 +19,7 @@ public class UserAuthService implements UserAuthServiceInterface {
 	
 	private PasswordEncoderUtility passwordEncoder;
     
-	 @Autowired
-	    public UserAuthService(UserRepository userRepo, PasswordEncoderUtility passwordEncoder) {
+	 public UserAuthService(UserRepository userRepo, PasswordEncoderUtility passwordEncoder) {
 	        this.userRepo = userRepo;
 	        this.passwordEncoder = passwordEncoder;
 	    }

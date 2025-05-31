@@ -1,9 +1,20 @@
 package eams.service;
 
-import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.*;
+import java.util.List;
+import java.util.Optional;
 
-import java.util.*;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import static org.mockito.ArgumentMatchers.any;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
+import org.mockito.MockitoAnnotations;
 
 import com.eams.dtos.AssetDTO;
 import com.eams.entity.Asset;
@@ -12,12 +23,6 @@ import com.eams.entity.User;
 import com.eams.repository.AssetRepository;
 import com.eams.repository.UserRepository;
 import com.eams.service.AssetService;
-
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
-import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 
 public class AssetServiceTest {
 
@@ -32,19 +37,21 @@ public class AssetServiceTest {
 
     private AssetDTO assetDTO;
     private User managerUser;
-    private User assignedUser;
+    private User assignedUser; 
     private Asset asset;
+    private String managerMail;
 
     @BeforeEach
     public void setUp() {
         MockitoAnnotations.openMocks(this);
+        managerMail = "manager12@gmail.com";
 
         managerUser = new User();
         managerUser.setUser_id(1L);
         managerUser.setRole(Role.MANAGER);
-        managerUser.setEmail("manager12@gmail.com");
+        managerUser.setEmail(managerMail);
 
-        assignedUser = new User();
+        assignedUser = new User(); 
         assignedUser.setUser_id(2L);
         assignedUser.setRole(Role.OPERATOR);
         assignedUser.setEmail("assigned@gmail.com");
@@ -68,11 +75,12 @@ public class AssetServiceTest {
 
     @Test
     public void testCreateAsset_Success() {
-        when(userRepository.findByEmail("manager12@gmail.com")).thenReturn(Optional.of(managerUser));
-        when(userRepository.findById(2L)).thenReturn(Optional.of(assignedUser));
-        when(assetRepository.save(any(Asset.class))).thenReturn(asset);
+    	when(userRepository.findByEmail(managerMail)).thenReturn(Optional.of(managerUser));
+    	when(userRepository.findById(2L)).thenReturn(Optional.of(assignedUser));
+    	when(assetRepository.save(any(Asset.class))).thenReturn(asset);
 
-        boolean result = assetService.createAsset(assetDTO, "manager12@gmail.com");
+
+        boolean result = assetService.createAsset(assetDTO, managerMail);
 
         assertTrue(result);
         verify(assetRepository, times(1)).save(any(Asset.class));
@@ -112,6 +120,7 @@ public class AssetServiceTest {
     @Test
     public void testUpdateAsset_Success() {
         when(assetRepository.findById(2L)).thenReturn(Optional.of(asset));
+        when(userRepository.findByEmail(managerMail)).thenReturn(Optional.of(managerUser));
         when(assetRepository.save(any(Asset.class))).thenReturn(asset);
 
         Asset updatedAsset = new Asset();
@@ -120,9 +129,9 @@ public class AssetServiceTest {
         updatedAsset.setLocation("Plant B");
         updatedAsset.setThresholdTemp(85.0);
         updatedAsset.setThresholdPressure(40.0);
-        updatedAsset.setAssignedTo(assignedUser);
+        updatedAsset.setAssignedTo(assignedUser); // ✅ Now this won't throw error
 
-        String result = assetService.updateAsset(2L, updatedAsset);
+        String result = assetService.updateAsset(2L, updatedAsset, managerMail);
 
         assertEquals("Asset updated successfully.", result);
         verify(assetRepository, times(1)).save(any(Asset.class));
