@@ -57,7 +57,6 @@ class UptimeLogServiceTest {
         log.setEndTime(LocalDateTime.now().plusHours(1));
         log.setUptimeLogStatus(UpTimeLogStatus.UP);
     }
-    
 //    @Test
 //    void testCreateLog_whenAssetExists() {
 //        Alert alert1 = new Alert();
