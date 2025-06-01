@@ -91,49 +91,82 @@ Manager	 : Add/edit assets, assign assets, view reports, receive alerts
 🗃 Entity Design (ERD)
 ==========================================
 User
+
 │── id
+
 │── name
+
 │── email
+
 │── password
+
 │── role (ENUM: MANAGER, OPERATOR)
 
+
 Asset
+
 │── id
+
 │── name
+
 │── type
+
 │── location
+
 │── thresholdTemp
+
 │── thresholdPressure
+
 │── assignedTo (User)
 
 SensorData
 │── id
+
 │── assetId (FK)
+
 │── temperature
+
 │── pressure
  
 │── timestamp
 
 Alert
+
 │── id
+
 │── assetId (FK)
+
 │── type (TEMP_HIGH / PRESSURE_HIGH)
+
 │── message
+
 │── status (ACTIVE / RESOLVED)
+
 │── triggeredAt
 
 MaintenanceLog
+
 │── id
+
 │── assetId (FK)
+
 │── scheduledDate
+
 │── completedDate
+
 │── remarks
 
+
 UptimeLog
+
 │── id
+
 │── assetId (FK)
+
 │── startTime
+
 │── endTime
+
 │── status (UP / DOWN)
 
 
@@ -141,29 +174,36 @@ UptimeLog
 🔁 REST API Endpoints
 ==========================================
 📌 AuthController
+
 POST /api/auth/register POST /api/auth/login
 
 📌 UserController (Manager only)
+
 GET /api/users
 PUT /api/users/{id}/role
  
 📌 AssetController
+
 POST /api/assets	// Manager
 GET /api/assets	// Operator/Manager GET /api/assets/{id}
 PUT /api/assets/{id} DELETE /api/assets/{id}
 
 📌 SensorDataController
+
 POST /api/sensors/send-data	// Simulated API GET /api/sensors/asset/{id}
 
 📌 AlertController
+
 GET /api/alerts	// All alerts PUT /api/alerts/{id}/resolve // Mark resolved
 
 📌 MaintenanceController
+
 POST /api/maintenance
 GET /api/maintenance/asset/{id}
 
 
 📌 UptimeLogController
+
 GET /api/uptime/asset/{id}
 
 
@@ -193,15 +233,25 @@ Scenario: A temperature sensor sends data 85°C for Asset#101.
 🗂 Folder Structure
 =======================================================
 com.eams
+
 ├── config
+
 ├── controller
+
 ├── dto
+
 ├── entity
+
 ├── exception
+
 ├── repository
+
 ├── security
+
 ├── service
+
 ├── util
+
 └── EamsApplication.java
 
 
@@ -242,13 +292,13 @@ Week	Deliverable
 ==================================================
 
 See GitHub contributors list for full details.
-- [Panchami P Kumar](https://github.com/pxnchxm1) – User Authentication Module
+- [Panchami P Kumar] (https://github.com/pxnchxm1) – User Authentication Module
 - [Sasanka Poturi] (https://github.com/sasaanka) – User  Module
 - [Badri Sai Siddartha Reddy] (https://github.com/SaiSiddartha0906) - Asset Module
-- [Mudaliar Saurabh](https://github.com/MudaliarSaurabh) - MaintenanceLog Module
-- [A K Harikesh ](https://github.com/akharikesh)- Alert Module
-- [Shrinath M ](https://github.com/Shrinath-M) - Uptime Log Module
-- [Yogeshwarran S K ](https://github.com/YogeshwarranSK)  - Sensor Data Module
+- [Mudaliar Saurabh] (https://github.com/MudaliarSaurabh) - MaintenanceLog Module
+- [A K Harikesh ] (https://github.com/akharikesh)- Alert Module
+- [Shrinath M ] (https://github.com/Shrinath-M) - Uptime Log Module
+- [Yogeshwarran S K ] (https://github.com/YogeshwarranSK)  - Sensor Data Module
 
 Thanks to all team members and contributors for their collaboration, feedback, and testing.
 
