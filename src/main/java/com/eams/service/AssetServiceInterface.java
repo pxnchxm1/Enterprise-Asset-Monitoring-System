@@ -19,6 +19,6 @@ public interface AssetServiceInterface {
 	public String deleteAsset(Long id,Long userid);
 	
 
-	public String updateAsset(Long id, AssetDTO dto);
+	public String updateAsset(Long assetId, Asset updatedAsset, String managerEmail);
 
 }
